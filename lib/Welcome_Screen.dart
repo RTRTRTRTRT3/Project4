@@ -33,7 +33,7 @@ class WelcomeScreen extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/screen1_back.jpg'),
+                  image: AssetImage('assets/images/screen1_back.jpg'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -41,7 +41,7 @@ class WelcomeScreen extends StatelessWidget {
             // Логотип в центре
             Center(
               child: Image.asset(
-                'assets/logo.png',
+                'assets/images/logo.png',
                 width: 150,
                 height: 150,
               ),
