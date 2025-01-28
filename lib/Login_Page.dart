@@ -1,140 +1,105 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const LoginScreen(),
-    );
-  }
-}
-
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
+class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('Login Page')),
       body: Stack(
         children: [
-          // Background Image
+          // Фоновое изображение
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/food.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          // Overlay with content
+          // Полупрозрачный черный контейнер
           Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Logo
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: Image.asset(
-                      'assets/images/logo.png',
-                      height: 100,
-                      width: 100,
+            child: Container(
+              width: 300, // Установите желаемую ширину
+              height: 400, // Установите желаемую высоту
+              color: Colors.black.withOpacity(0.7),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Логотип
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: Image.asset(
+                        'assets/images/logo.png',
+                        height: 100,
+                        width: 100,
+                      ),
                     ),
-                  ),
-                  // Login fields
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.7),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      children: [
-                        // Username field
-                        TextField(
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: 'Please enter your account',
-                            prefixIcon: const Icon(Icons.person),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 15),
-                        // Password field
-                        TextField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: 'Please enter your password',
-                            prefixIcon: const Icon(Icons.lock),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 15),
-                        // Privacy policy checkbox
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: true,
-                              onChanged: (value) {},
-                              activeColor: Colors.yellow,
-                            ),
-                            const Expanded(
-                              child: Text(
-                                'I have read and agreed User Privacy Policy',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        // Login Button
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.yellow,
-                              shape: RoundedRectangleBorder(
+                    // Поля ввода
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Column(
+                        children: [
+                          TextField(
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintText: 'Please enter your account',
+                              prefixIcon: const Icon(Icons.person),
+                              border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none,
                               ),
                             ),
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/home');
-                            },
-                            child: const Text(
-                              'Login',
-                              style: TextStyle(color: Colors.black),
+                          ),
+                          const SizedBox(height: 15),
+                          TextField(
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintText: 'Please enter your password',
+                              prefixIcon: const Icon(Icons.lock),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        // Forgot password
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            'Forgot your password?',
-                            style: TextStyle(color: Colors.white),
+                          const SizedBox(height: 15),
+                          // Кнопка входа
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.yellow,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/home'); // Переход на главный экран
+                              },
+                              child: const Text(
+                                'Login',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 10),
+                          // Забыли пароль
+                          TextButton(
+                            onPressed: () {},
+                            child: const Text(
+                              'Forgot your password?',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
