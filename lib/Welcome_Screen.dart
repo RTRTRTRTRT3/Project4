@@ -4,12 +4,12 @@ void main() {
   runApp(MaterialApp(
     home: WelcomeScreen(),
     routes: {
-      '/login': (context) => LoginPage(),
+      '/login': (context) => WelcomeLoginPage(),
     },
   ));
 }
 
-class LoginPage extends StatelessWidget {
+class WelcomeLoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
