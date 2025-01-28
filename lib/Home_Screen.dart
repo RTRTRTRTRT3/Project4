@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'Details_Screen.dart';
 
 Future<List<dynamic>> loadJsonData() async {
   final String response = await rootBundle.loadString('assets/text.json');
@@ -30,7 +31,7 @@ class HomeScreen extends StatelessWidget {
               height: 200.0,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/food.jpg'),
+                  image: AssetImage('assets/images/food.jpg'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -64,7 +65,7 @@ class HomeScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                'Popular food',
+                'Popular Food',
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
               ),
             ),
@@ -72,7 +73,7 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 8.0),
 
             Container(
-              height: 180.0,
+              height: MediaQuery.of(context).size.height * 0.5,
               child: FutureBuilder(
                 future: loadFoodData(),
                 builder: (context, snapshot) {
@@ -82,12 +83,12 @@ class HomeScreen extends StatelessWidget {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else {
                     final foodData = snapshot.data;
-                    final popularFoods = foodData?.last['popular'] ?? [];
+                    final popularFoods = foodData?.expand((category) => category['foods']).toList() ?? [];
 
                     return ListView(
                       scrollDirection: Axis.horizontal,
                       children: popularFoods.map<Widget>((food) {
-                        return _buildFoodItem(food['image'], food['name'], food['description']);
+                        return _buildPopularFoodItem(context, food['image_url'], food['name'], ''); // Передаем context
                       }).toList(),
                     );
                   }
@@ -114,40 +115,88 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFoodItem(String imagePath, String title, String description) {
+  Widget _buildPopularFoodItem(BuildContext context, String imagePath, String title, String description) {
     return GestureDetector(
       onTap: () {
-        // Navigate to details page
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailsScreen(foodData: {
+              'image': imagePath,
+              'title': title,
+              'description': description,
+            }),
+          ),
+        );
       },
       child: Container(
-        width: 150.0,
+        width: 350.0,
         margin: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.0),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Stack(
           children: [
-            Container(
-              height: 100.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                image: DecorationImage(
-                  image: AssetImage('assets/$imagePath'),
-                  fit: BoxFit.cover,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 180.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
+                    image: DecorationImage(
+                      image: AssetImage('assets/$imagePath'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              title,
+                              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 4.0),
+                            Text(
+                              description,
+                              style: TextStyle(fontSize: 12.0, color: Colors.grey[600]),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(Icons.star, color: Colors.yellow, size: 20.0), // Иконка с оценкой
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              right: 8.0,
+              top: 8.0,
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Icon(Icons.favorite, color: Colors.red, size: 16.0),
               ),
-            ),
-            SizedBox(height: 8.0),
-            Text(
-              title,
-              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            SizedBox(height: 4.0),
-            Text(
-              description,
-              style: TextStyle(fontSize: 12.0, color: Colors.grey[600]),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
