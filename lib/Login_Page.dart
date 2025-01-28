@@ -28,7 +28,7 @@ class LoginScreen extends StatelessWidget {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/food.jpg'),
+                image: AssetImage('assets/images/food.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -43,7 +43,7 @@ class LoginScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20.0),
                     child: Image.asset(
-                      'assets/logo.png',
+                      'assets/images/logo.png',
                       height: 100,
                       width: 100,
                     ),
